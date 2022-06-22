@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="center">Log In</h2>
+
+<div class="row">
+  <form class="col s6 offset-s3" method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="btn" value="login">
+    <!-- Will automatically redirect user that tries to access a protected route 
+      back to that route after they log in -->
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+</div>
+
+{% endblock %}

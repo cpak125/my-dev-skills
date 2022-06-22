@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>My Skills</h1>
+
+{% for skill in skill_list %}
+  <a href="#">
+    <div class="card-panel teal darken-1">
+        <!-- <div class="card-content"> -->
+            <span class="white-text">{{ skill.description }}</span>
+        <!-- </div> -->
+    </div>
+  </a>
+{% endfor %}
+
+{% endblock %}

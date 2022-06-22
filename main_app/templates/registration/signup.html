@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="center">Sign Up</h3>
+
+{% if error_message %}
+  <p class="red-text">{{ error_message }}</p>
+{% endif %}
+
+
+<form method="POST" action="{% url 'signup' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" class="btn" value="sign up">
+  <!-- Will automatically redirect user that tries to access a protected route 
+    back to that route after they log in -->
+  <input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{% endblock %}
