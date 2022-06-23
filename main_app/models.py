@@ -23,5 +23,5 @@ class Skill(models.Model):
     return f'{self.name} ({self.id})'
 
   def get_absolute_url(self):
-    return reverse('detail', kwargs={'skill_id': self.id})  
+    return reverse('skills_detail', kwargs={'pk': self.id})  
 

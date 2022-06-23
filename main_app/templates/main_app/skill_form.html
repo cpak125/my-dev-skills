@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h3 class="center">Add a Skill</h3>
+  {% if object %}
+    <h3 class="center-align">Edit <span class="teal-text">{{ object.description }}</span></h3>
+  {% else %}
+    <h3 class="center">Add a Skill</h3>
+  {% endif %}    
   <div class="row">
-  <form action="" method="POST" class="col s9">
+  <form action="" method="POST" class="col s9 offset-s1">
     {% csrf_token %}
     <table>
       {{ form.as_table }}

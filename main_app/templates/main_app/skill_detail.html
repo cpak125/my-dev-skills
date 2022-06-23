@@ -5,14 +5,14 @@
 
 <div class="row">
   <div class="col s6 offset-s3">
-    <div class="card">
-      <div class="card-content">
+    <div class="card blue-grey">
+      <div class="card-content white-text">
         <span class="card-title">{{ skill.description }}</span>
         <p>Level: {{ skill.get_level_display }}</p>
       </div>
       <div class="card-action">
-        <a href="#" class="btn">Edit</a>
-        <a href="#" class="btn red">Delete</a>
+        <a href="{% url 'skills_update' skill.id %}" class="btn">Edit</a>
+        <a href="{% url 'skills_delete' skill.id %}" class="btn red">Delete</a>
       </div>
     </div>
   </div>

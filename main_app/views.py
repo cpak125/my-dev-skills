@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import Skill
@@ -35,6 +35,16 @@ class SkillCreate(CreateView):
 # Class-Based View to get details of a skill
 class SkillDetail(DetailView):
   model = Skill
+
+# Class-Based View to update a skill
+class SkillUpdate(UpdateView):
+  model = Skill
+  fields = ['description', 'level']
+
+# Class-Based View to delete a skill
+class SkillDelete(DeleteView):
+  model = Skill
+  success_url = '/skills/'
 
 # Define signup functionality
 def signup(request):
