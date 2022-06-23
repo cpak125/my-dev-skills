@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 SKILL_LEVELS = (
   (1,'1 - Fundamental Awareness'),
@@ -18,6 +19,9 @@ class Skill(models.Model):
   )
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-  def __str_(self):
+  def __str__(self):
     return f'{self.name} ({self.id})'
+
+  def get_absolute_url(self):
+    return reverse('detail', kwargs={'skill_id': self.id})  
 

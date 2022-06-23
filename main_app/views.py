@@ -1,11 +1,15 @@
 from django.shortcuts import redirect, render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import Skill
 
 # Create your views here.
+
+# Define the home view
+def home(request):
+  return render(request, 'home.html')
 
 # Class-Based View to list all skills of logged-in user
 class SkillList(ListView):
@@ -28,9 +32,9 @@ class SkillCreate(CreateView):
     # Let CreateView do its job as usual
     return super().form_valid(form)
 
-# Define the home view
-def home(request):
-  return render(request, 'home.html')
+# Class-Based View to get details of a skill
+class SkillDetail(DetailView):
+  model = Skill
 
 # Define signup functionality
 def signup(request):

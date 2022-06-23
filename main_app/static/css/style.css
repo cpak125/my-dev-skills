@@ -22,3 +22,9 @@ div.card-panel {
 div.row {
   margin-bottom: 0;
 }
+
+label {
+  font-size: 17px;
+  color: #263238;
+  font-weight: bolder;
+}
