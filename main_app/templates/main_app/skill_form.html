@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h3 class="center">Add a Skill</h3>
+  <div class="row">
+  <form action="" method="POST" class="col s9">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" class="btn" value="{{ object|yesno:'Update Skill, Add Skill' }}"></input>
+  </form>
+  </div>
+
+  <script>
+    const selectEl = document.getElementById('id_level');
+    M.FormSelect.init(selectEl);
+  </script>
+{% endblock %}

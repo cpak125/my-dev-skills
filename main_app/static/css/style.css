@@ -1,9 +1,3 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 body {
   height: 100vh;
   font-family: 'Source Code Pro';
@@ -18,4 +12,13 @@ main {
 footer.page-footer {
   padding-top: 0;
   text-align: right;
+}
+
+div.card-panel {
+  padding: 16px;
+  margin-bottom: 4px;
+}
+
+div.row {
+  margin-bottom: 0;
 }
