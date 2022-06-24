@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import Skill
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -12,7 +13,7 @@ def home(request):
   return render(request, 'home.html')
 
 # Class-Based View to list all skills of logged-in user
-class SkillList(ListView):
+class SkillList(LoginRequiredMixin, ListView):
   model = Skill
 
   def get_queryset(self):
@@ -33,16 +34,16 @@ class SkillCreate(CreateView):
     return super().form_valid(form)
 
 # Class-Based View to get details of a skill
-class SkillDetail(DetailView):
+class SkillDetail(LoginRequiredMixin, DetailView):
   model = Skill
 
 # Class-Based View to update a skill
-class SkillUpdate(UpdateView):
+class SkillUpdate(LoginRequiredMixin, UpdateView):
   model = Skill
   fields = ['description', 'level']
 
 # Class-Based View to delete a skill
-class SkillDelete(DeleteView):
+class SkillDelete(LoginRequiredMixin, DeleteView):
   model = Skill
   success_url = '/skills/'
 

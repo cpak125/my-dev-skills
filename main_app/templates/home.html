@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-  <h1>Welcome to My Dev Skills</h1>
+  <div class="row home">
+    <div class="col s5 description">
+      <h3>Welcome to MyDevSkills</h3>
+      <h5>Keep track of what developer skills you have</h5>
+    </div> 
+    <div class="col s7">
+      <img class="responsive-img" src="{% static 'images/logos.jpeg' %}" alt="">
+    </div>
+  </div>
 {% endblock %}
