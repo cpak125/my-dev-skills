@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import Skill
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import NoteForm
 
 # Create your views here.
 
@@ -33,10 +34,16 @@ class SkillCreate(CreateView):
     # Let CreateView do its job as usual
     return super().form_valid(form)
 
-# Class-Based View to get details of a skill
-class SkillDetail(LoginRequiredMixin, DetailView):
-  model = Skill
-
+def skills_detail(request, skill_id):
+  skill = Skill.objects.get(id=skill_id)
+  # instantiate FeedingForm to be rendered in the template
+  note_form = NoteForm()
+  return render(request, 'skills/detail.html', {
+    # include the cat and feeding_form in the context
+    'skill': skill,
+    'note_form': note_form
+})
+  
 # Class-Based View to update a skill
 class SkillUpdate(LoginRequiredMixin, UpdateView):
   model = Skill

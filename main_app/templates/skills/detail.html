@@ -16,10 +16,18 @@
       </div>
     </div>
   </div>
+
   <div class="row"></div>
+
   <div class="row">
     <div class="col s8 offset-s2">
       <h3 class="center-align">Notes</h3>
+        <form method="POST">it a
+          {% csrf_token %}
+          {{ note_form.as_p }}
+          <input type="submit" class="btn" value="Add Note">
+        </form>
+        <br><br>
       {% for note in skill.note_set.all %}
       <div class="card teal">
           <div class="card-content white-text">
@@ -32,4 +40,14 @@
     </div>
   </div>
 </div>
+
+<script>
+  const dateEl = document.getElementById('id_date');
+    M.Datepicker.init(dateEl, {
+      format: 'yyyy-mm-dd',
+      defaultDate: new Date(),
+      setDefaultDate: true,
+      autoClose: true
+    });
+</script>
 {% endblock %}
