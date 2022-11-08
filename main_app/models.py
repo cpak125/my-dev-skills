@@ -20,8 +20,20 @@ class Skill(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   def __str__(self):
-    return f'{self.name} ({self.id})'
+    return f'{self.description} skill level is ({self.get_level_display()})'
 
   def get_absolute_url(self):
     return reverse('skills_detail', kwargs={'pk': self.id})  
+
+class Note(models.Model):
+  date = models.DateField()
+  content = models.TextField(max_length=250, default="")
+  skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+
+  def __str__(self):
+    return f"{self.date}: {self.content}"
+
+  class Meta:
+    ordering = ['-date']
+
 
