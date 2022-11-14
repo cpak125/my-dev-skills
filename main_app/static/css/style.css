@@ -1,6 +1,7 @@
 body {
   height: 100vh;
-  font-family: 'Source Code Pro';
+  font-family: 'Source Code Pro', monospace;
+  font-weight: bold;
   display: flex;
   flex-direction: column;
 }
@@ -20,10 +21,10 @@ div.card-panel {
 }
 
 div.home {
-  height: 10vh;
   padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 div.row {
@@ -37,7 +38,8 @@ label {
 }
 
 img.responsive-img {
-  height: 40rem;
+  height: 30rem;
+  margin-top: 3rem;
 }
 
 .description {
@@ -48,5 +50,5 @@ img.responsive-img {
 }
 
 a.brand-logo {
-  font-size: large;
+  font-size: x-large;
 }
