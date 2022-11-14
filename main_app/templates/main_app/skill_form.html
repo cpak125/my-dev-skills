@@ -8,8 +8,11 @@
   {% endif %}    
   <div class="row">
   <form action="" method="POST" class="col s9 offset-s1">
+    <!-- security measure that validates requests to the server -->
     {% csrf_token %}
     <table>
+      <!-- The form variable is an instance of the ModelForm class instantiated automatically
+      by the CreateView and passed to this template (via the context dictionary). -->
       {{ form.as_table }}
     </table>
     <input type="submit" class="btn" value="{{ object|yesno:'Update Skill, Add Skill' }}"></input>
@@ -17,6 +20,9 @@
   </div>
 
   <script>
+  /*  Because we used choices=SKILL_LEVELS in the Skill model, 
+  ModelForm generated a <select> instead of the typical <input type="text"> for a IntegerField .
+  But, <select> dropdowns also need to be initialized when using Materialize. */
     const selectEl = document.getElementById('id_level');
     M.FormSelect.init(selectEl);
   </script>

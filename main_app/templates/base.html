@@ -21,6 +21,7 @@
           <a href="#" data-target="mobile-hamburger" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
         </ul>
         <ul class="right hide-on-med-and-down">
+          <!-- Thanks to the built-in auth, automatically have a user variable available in every template -->
           {% if user.is_authenticated %}
             <li>Welcome, {{ user }}</li>
             <li><a href="{% url 'skills_index' %}">View My Skills</a></li>

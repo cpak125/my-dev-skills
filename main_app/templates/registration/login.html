@@ -6,6 +6,8 @@
 <div class="row">
   <form class="col s6 offset-s3" method="POST" action="{% url 'login' %}">
     {% csrf_token %}
+    <!-- When LoginView (CBV) renders the login.html template, it passes in the context a 
+      default form object we can display in login.html -->
     {{ form.as_p }}
     <input type="submit" class="btn" value="login">
     <!-- Will automatically redirect user that tries to access a protected route 
