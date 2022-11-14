@@ -9,7 +9,8 @@ A full-stack CRUD application where users can track what developer skills they h
 <img src="https://i.imgur.com/e5gCBQP.png" />  
 <img src="https://i.imgur.com/xfugIUL.png" />
 <img src="https://i.imgur.com/5PsHXW2.png" />  
-<img src="https://i.imgur.com/LouzaaI.png" />
+<img src="https://i.imgur.com/evdKCYv.png" />
+<img src="https://i.imgur.com/7jjUQw4.png" />
 
 ## Technologies Used
   - HTML 
