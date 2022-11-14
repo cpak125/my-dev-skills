@@ -1,6 +1,6 @@
 # MyDevSkills
 
-A full-stack CRUD application where users can track what developer skills they have and at what level of proficiency.
+A full-stack CRUD application where users can track what developer skills they have and at what level of proficiency and write notes for each skill.
 
 [Deployed App](https://my-dev-skills.herokuapp.com/) 
 
