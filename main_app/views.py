@@ -119,7 +119,7 @@ def signup(request):
   if request.method == 'POST':
     # create a 'user' form object that includes the data from the browser
     form = UserCreationForm(request.POST)
-    if form.is_valid:
+    if form.is_valid():
       # Add the user to the database
       user = form.save()
       # log the user in
