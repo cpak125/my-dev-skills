@@ -41,6 +41,7 @@ class Skill(models.Model):
     return f'{self.description} skill level is ({self.get_level_display()})'
 
   def get_absolute_url(self):
+    # returns the correct path for the skills_detail named route
     return reverse('skills_detail', kwargs={'skill_id': self.id})  
 
 class Note(models.Model):

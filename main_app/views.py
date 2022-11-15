@@ -21,15 +21,15 @@ def home(request):
 #   that we can extend and use instead of view functions.
 # • All CBVs by default will render templates from a folder inside of the templates folder 
 #   with a name the same as the app
-# • In a ListView, the queryset of model instances will be available via 
-#   attributes named object_list and <lowercase name of model>_list 
 
+# In a ListView, the queryset of model instances will be available via 
+# attributes named object_list and <lowercase name of model>_list 
 # Class-Based View to list all skills of logged-in user
 class SkillList(LoginRequiredMixin, ListView):
   # model attribute indicates which Model to access
   model = Skill
 
-  # override ListView get_queryset method to display only the logged in user's skills
+  # override ListView's get_queryset method to display only the logged in user's skills
   def get_queryset(self):
     #  when a 1-M or M-M relationship exists, Django creates a related manager object
     # used to access the data related to a model instance.
