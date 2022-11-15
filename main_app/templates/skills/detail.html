@@ -39,13 +39,8 @@
           <p class="right-align">{{ note.date }}</p> 
           <a href="{% url 'delete_note' skill.id note.id %}" 
           onclick="return confirm('Are you sure you want to delete this note')" class="btn red">Delete</a>
-            <!-- <form class="right-align" action="{% url 'delete_note' skill.id note.id %}" method="POST">
-              {% csrf_token %}
-                <input type="submit" class="btn-small red right-align" value="Delete">
-            </form> -->
         </div>
       </div>
-
       {% endfor %}
     </div>
   </div>
