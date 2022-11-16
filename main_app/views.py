@@ -8,9 +8,14 @@ from django.contrib.auth.decorators import login_required
 from .models import Skill, Note
 # protect class-based views from unauthorized users
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import NoteForm
+from .forms import NoteForm, SkillForm
 
 # Create your views here.
+
+# Define the home view
+#  all view functions need to define positional parameter to accept a request object Django passes in
+def home(request):
+  return render(request, 'home.html')
 
 # Define skills index view
 @login_required
@@ -22,39 +27,27 @@ def skills_index(request):
   # You could also retrieve the logged in user's skills like this
   # skills = request.user.skill_set.all()
   return render(request, 'skills/index.html', {'skills': skills})
-# Define the home view
-#  all view functions need to define positional parameter to accept a request object Django passes in
-def home(request):
-  return render(request, 'home.html')
 
-# • Class-based Views are classes defined in the Django framework 
-#   that we can extend and use instead of view functions.
-# • All CBVs by default will render templates from a folder inside of the templates folder 
-#   with a name the same as the app
+@login_required
+def skills_create(request):
+  # create a ModelForm instance using the data in request.POST or set to None
+  skill_form = SkillForm(request.POST or None)
+  if(request.method == 'POST'):
+    # validate the form
+    if skill_form.is_valid():
+    # don't save the form to the db until it has the user_id assigned
+      new_skill = skill_form.save(commit=False)
+      new_skill.user = request.user
+      new_skill.save()
+      return redirect('skills_detail', skill_id=new_skill.id)  
+  return render(request, 'skills/create.html', {'skill_form': skill_form})
 
-# CreateView CBV will automatically:
-# • Create a Django ModelForm used to automatically create the form's inputs based on the Model.
-# • If the request is a GET, render a template that includes a <form>
-# • In the case of a POST, use the posted form's contents 
-#   to automatically create data and perform a redirect.
-# CreateView renders a default template named as follows: <name of model>_form.html
+@login_required
+def delete_note(request, skill_id, note_id):
+  note = Note.objects.get(id=note_id)
+  note.delete()
+  return redirect('skills_detail', skill_id=skill_id)
 
-# Class-Based View to create/add new skill for logged-in user
-class SkillCreate(LoginRequiredMixin, CreateView):
-  model = Skill
-  # fields attribute is required for CreateView, specify what fields from the Model are displayed in the ModelForm
-  fields = ['description', 'level']
-
-  # Skill model's get_absolute_url method will rediret to newly added skill's detail page
-  # success_url = '/skills/'
-
-  # This inherited method is called when a valid skill form is being submitted
-  def form_valid(self, form):
-    # Assign the logged in user (self.request.user)
-    # the built-in auth automatically assigns the user to the request object
-    form.instance.user = self.request.user  # form.instance is the skill
-    # Let CreateView do its job as usual
-    return super().form_valid(form)
 
 @login_required
 def skills_detail(request, skill_id):
