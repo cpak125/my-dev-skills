@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if skill %}
+    <h3 class="center-align">Edit <span class="teal-text">{{ skill.description }}</span></h3>
+    <div class="row">
+      <form action="{% url 'skills_update' skill.id %}" method="POST" class="col s9 offset-s1">
+      <!-- security measure that validates requests to the server -->
+      {% csrf_token %}
+      <table>
+        <!-- The form variable is an instance of the ModelForm class instantiated automatically
+        by the CreateView and passed to this template (via the context dictionary). -->
+        {{ form.as_table }}
+      </table>
+      <input type="submit" class="btn" value="Update Skill"></input>
+      <a href="{% url 'skills_detail' skill.id %}" class="btn red">Cancel</a>
+      </form>
+    </div>
+  {% else %}
+    <h3 class="center">Add a Skill</h3>    
+    <div class="row">
+      <!-- empty action attribute will post to the same url in the address bar -->
+    <form action="{% url 'skills_create' %}" method="POST" class="col s9 offset-s1">
+      <!-- security measure that validates requests to the server -->
+      {% csrf_token %}
+      <table>
+        <!-- The form variable is an instance of the ModelForm class instantiated automatically
+        by the CreateView and passed to this template (via the context dictionary). -->
+        {{ skill_form.as_table }}
+      </table>
+      <input type="submit" class="btn" value="Add Skill"></input>
+      <a href="{% url 'skills_index' %}" class="btn red">Cancel</a>
+    </form>
+    </div>
+  {% endif %}
+
+  <script>
+  /*  Because we used choices=SKILL_LEVELS in the Skill model, 
+  ModelForm generated a <select> instead of the typical <input type="text"> for a IntegerField .
+  But, <select> dropdowns also need to be initialized when using Materialize. */
+    const selectEl = document.getElementById('id_level');
+    M.FormSelect.init(selectEl);
+  </script>
+{% endblock %}

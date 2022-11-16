@@ -28,6 +28,7 @@ def skills_index(request):
   # skills = request.user.skill_set.all()
   return render(request, 'skills/index.html', {'skills': skills})
 
+# Define skill create view
 @login_required
 def skills_create(request):
   # create a ModelForm instance using the data in request.POST or set to None
@@ -40,15 +41,9 @@ def skills_create(request):
       new_skill.user = request.user
       new_skill.save()
       return redirect('skills_detail', skill_id=new_skill.id)  
-  return render(request, 'skills/create.html', {'skill_form': skill_form})
+  return render(request, 'skills/form.html', {'skill_form': skill_form})
 
-@login_required
-def delete_note(request, skill_id, note_id):
-  note = Note.objects.get(id=note_id)
-  note.delete()
-  return redirect('skills_detail', skill_id=skill_id)
-
-
+# Define skill detail view
 @login_required
 def skills_detail(request, skill_id):
   # A Manager object is the interface through which database query operations are provided to Django models
@@ -70,6 +65,7 @@ def skills_detail(request, skill_id):
     'note_form': note_form
 })
 
+# Define note create view
 @login_required
 def add_note(request, skill_id):
   # create a ModelForm instance using the data in request.POST
@@ -82,6 +78,7 @@ def add_note(request, skill_id):
     new_note.save()
   return redirect('skills_detail', skill_id = skill_id)
 
+# Define note delete view
 @login_required
 def delete_note(request, skill_id, note_id):
   note = Note.objects.get(id=note_id)
@@ -92,10 +89,19 @@ def delete_note(request, skill_id, note_id):
 # of the context two attributes that are assigned the model instance. 
 # The attributes are named 'object' and the lowercase name of the Model e.g.,'note', 'skill'
 
-# Class-Based View to update a skill
-class SkillUpdate(LoginRequiredMixin, UpdateView):
-  model = Skill
-  fields = ['description', 'level']
+# Define skills update view
+def skills_update(request, skill_id):
+  skill = Skill.objects.get(id=skill_id)
+  form = SkillForm(request.POST or None, instance=skill)
+
+  if(request.method == 'POST'):
+    if form.is_valid():
+      form.save()
+      return redirect('skills_detail', skill_id=skill_id)
+  return render(request, 'skills/form.html', {
+    'form': form, 
+    'skill': skill
+})  
 
 # DeleteView automatically renders a confirmation template i.e., <lowercase model>_confirm_delete_html
 # Class-Based View to delete a skill

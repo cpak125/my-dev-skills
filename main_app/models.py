@@ -26,7 +26,7 @@ SKILL_LEVELS = (
 
 class Skill(models.Model):
   # each field (attribute) is represented by a Field class, e.g., CharField 
-  description = models.TextField(max_length=250, unique=True)
+  description = models.TextField(max_length=250)
   level =  models.IntegerField(
     'Skill Level',
     choices=SKILL_LEVELS,
@@ -45,9 +45,14 @@ class Skill(models.Model):
     # returns the correct path for the skills_detail named route
     return reverse('skills_detail', kwargs={'skill_id': self.id})  
 
+  class Meta:
+    ordering = ['description']
+    unique_together = (('description', 'user'),)
+    
+
 class Note(models.Model):
   date = models.DateField()
-  content = models.TextField(max_length=250, unique=True, default="")
+  content = models.TextField(max_length=250, default="")
   # the foreign key linking to a skill instance
   # avoid orphan records
   # by default, creates skill_id FK
@@ -58,5 +63,7 @@ class Note(models.Model):
 
   class Meta:
     ordering = ['-date']
+    unique_together = (('content', 'skill'),)
+
 
 
