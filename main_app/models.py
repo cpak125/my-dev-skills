@@ -40,6 +40,7 @@ class Skill(models.Model):
   def __str__(self):
     return f'{self.description} skill level is ({self.get_level_display()})'
 
+  # define the url of a single instance (detail view) of a Skill
   def get_absolute_url(self):
     # returns the correct path for the skills_detail named route
     return reverse('skills_detail', kwargs={'skill_id': self.id})  

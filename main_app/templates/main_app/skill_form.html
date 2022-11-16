@@ -7,6 +7,7 @@
     <h3 class="center">Add a Skill</h3>
   {% endif %}    
   <div class="row">
+    <!-- empty action attribute will post to the same url in the address bar -->
   <form action="" method="POST" class="col s9 offset-s1">
     <!-- security measure that validates requests to the server -->
     {% csrf_token %}

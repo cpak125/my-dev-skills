@@ -6,12 +6,22 @@ from django.contrib.auth.forms import UserCreationForm
 # protect view functions/routes dependent upon a user being logged in
 from django.contrib.auth.decorators import login_required 
 from .models import Skill, Note
-# protect class-based views from unauthroized users
+# protect class-based views from unauthorized users
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import NoteForm
 
 # Create your views here.
 
+# Define skills index view
+@login_required
+def skills_index(request):
+  # Perform query operations on a Model to retrieve model objects (rows) 
+  # from a database table, via a Manager object.
+  # By default, Django adds a Manager to every Model class i.e.,the 'objects' attribute attached to Skill 
+  skills = Skill.objects.filter(user=request.user)
+  # You could also retrieve the logged in user's skills like this
+  # skills = request.user.skill_set.all()
+  return render(request, 'skills/index.html', {'skills': skills})
 # Define the home view
 #  all view functions need to define positional parameter to accept a request object Django passes in
 def home(request):
@@ -22,25 +32,11 @@ def home(request):
 # • All CBVs by default will render templates from a folder inside of the templates folder 
 #   with a name the same as the app
 
-# In a ListView, the queryset of model instances will be available via 
-# attributes named object_list and <lowercase name of model>_list 
-# Class-Based View to list all skills of logged-in user
-class SkillList(LoginRequiredMixin, ListView):
-  # model attribute indicates which Model to access
-  model = Skill
-
-  # override ListView's get_queryset method to display only the logged in user's skills
-  def get_queryset(self):
-    #  when a 1-M or M-M relationship exists, Django creates a related manager object
-    # used to access the data related to a model instance.
-    # 'skill_set' is the related manager object
-    # User objects have access to their related Skill objects
-    return self.request.user.skill_set.all()
-
 # CreateView CBV will automatically:
 # • Create a Django ModelForm used to automatically create the form's inputs based on the Model.
 # • If the request is a GET, render a template that includes a <form>
-# • In the case of a POST, use the posted form's contents to automatically and transparently create data and perform a redirect.
+# • In the case of a POST, use the posted form's contents 
+#   to automatically create data and perform a redirect.
 # CreateView renders a default template named as follows: <name of model>_form.html
 
 # Class-Based View to create/add new skill for logged-in user
@@ -48,7 +44,9 @@ class SkillCreate(LoginRequiredMixin, CreateView):
   model = Skill
   # fields attribute is required for CreateView, specify what fields from the Model are displayed in the ModelForm
   fields = ['description', 'level']
-  success_url = '/skills/'
+
+  # Skill model's get_absolute_url method will rediret to newly added skill's detail page
+  # success_url = '/skills/'
 
   # This inherited method is called when a valid skill form is being submitted
   def form_valid(self, form):
@@ -106,7 +104,7 @@ class SkillUpdate(LoginRequiredMixin, UpdateView):
   model = Skill
   fields = ['description', 'level']
 
-# DeleteView automaticall renders a confirmation template i.e., <lowercase model>_confirm_delete_html
+# DeleteView automatically renders a confirmation template i.e., <lowercase model>_confirm_delete_html
 # Class-Based View to delete a skill
 class SkillDelete(LoginRequiredMixin, DeleteView):
   model = Skill
