@@ -20,18 +20,17 @@ def home(request):
 # Define skills index view
 @login_required
 def skills_index(request):
-  # Perform query operations on a Model to retrieve model objects (rows) 
-  # from a database table, via a Manager object.
-  # By default, Django adds a Manager to every Model class i.e.,the 'objects' attribute attached to Skill 
-  skills = Skill.objects.filter(user=request.user)
-  # You could also retrieve the logged in user's skills like this
-  # skills = request.user.skill_set.all()
+  # By default, Django adds a Manager to every Model class i.e.,the 'objects' attribute
+  # returns <QuerySet []>: list-like object that represents a collection of model instances (rows) from the database.
+  # behind the scences: SELECT * FROM main_app_skill WHERE user_id = request.user
+  skills = Skill.objects.filter(user_id=request.user)
   return render(request, 'skills/index.html', {'skills': skills})
 
 # Define skill create view
 @login_required
 def skills_create(request):
   # create a ModelForm instance using the data in request.POST or set to None
+  # creates a new skill instance using the form's POSTed input values
   skill_form = SkillForm(request.POST or None)
   if(request.method == 'POST'):
     # validate the form
@@ -39,6 +38,8 @@ def skills_create(request):
     # don't save the form to the db until it has the user_id assigned
       new_skill = skill_form.save(commit=False)
       new_skill.user = request.user
+      # behind the scences: INSERT INTO main_app_skill (description, level, user_id)  
+                              # VALUES (value1, value2, value3);
       new_skill.save()
       return redirect('skills_detail', skill_id=new_skill.id)  
   return render(request, 'skills/form.html', {'skill_form': skill_form})
@@ -46,20 +47,18 @@ def skills_create(request):
 # Define skill detail view
 @login_required
 def skills_detail(request, skill_id):
-  # A Manager object is the interface through which database query operations are provided to Django models
-  # By default, Django adds a Manager to every Model class - this is the objects attribute
+  # By default, Django adds a Manager to every Model class i.e.,the 'objects' attribute
+  # returns <QuerySet []>: list-like object that represents a collection of model instances (rows) from the database.
   # Django passes any captured URL parameters as a named argument to the view function i.e., skill_id
+  # behind the scences: SELECT * FROM main_app_skill WHERE id = skill_id
   skill = Skill.objects.get(id=skill_id)
-  #  when a 1-M or M-M relationship exists, Django creates a related manager object
-  # used to access the data related to a model instance.
-  # 'note_set' is the related manager object
-  # Skill objects have access to their related Note objects
-  notes = skill.note_set.all()
+  # behind the scences: SELECT * FROM main_app_note WHERE skill_id = skill_id
+  notes = Note.objects.filter(skill_id=skill_id)
   # instantiate NoteForm to be rendered in the template
   note_form = NoteForm()
-  # pass a dictionary of data (called the context) to a template called detail.html.
+  # pass a dictionary of data (called the context) to a template called skills/detail.html.
   return render(request, 'skills/detail.html', {
-    # include the cat and feeding_form in the context
+    # include the skill, notes, and note_form in the context
     'skill': skill,
     'notes': notes,
     'note_form': note_form
@@ -75,23 +74,29 @@ def add_note(request, skill_id):
   # don't save the form to the db until it has the skill_id assigned
     new_note = form.save(commit=False)
     new_note.skill_id = skill_id
+    # behind the scences: INSERT INTO main_app_note (date, content, skill_id)  
+                              # VALUES (value1, value2, value3);
     new_note.save()
   return redirect('skills_detail', skill_id = skill_id)
 
 # Define note delete view
 @login_required
 def delete_note(request, skill_id, note_id):
+  # behind the scenes: SELECT * FROM main_app_note WHERE id = note_id
   note = Note.objects.get(id=note_id)
-  note.delete()
-  return redirect('skills_detail', skill_id=skill_id)
-
-# CBVs that work with a single model instance automatically pass as part 
-# of the context two attributes that are assigned the model instance. 
-# The attributes are named 'object' and the lowercase name of the Model e.g.,'note', 'skill'
+  skill = Skill.objects.get(id=skill_id)
+  if request.method == 'POST':
+    note.delete()
+    return redirect('skills_detail', skill_id=skill_id)
+  return render(request, 'notes/delete.html', {
+    'note': note,
+    'skill': skill,
+})  
 
 # Define skills update view
 def skills_update(request, skill_id):
   skill = Skill.objects.get(id=skill_id)
+  # pass 'instance' arg to indicate if any changes, update this instance
   form = SkillForm(request.POST or None, instance=skill)
 
   if request.method == 'POST':

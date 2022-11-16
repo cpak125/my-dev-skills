@@ -37,8 +37,7 @@
         <div class="card-content white-text">
           <p>{{ note.content }}</p>
           <p class="right-align">{{ note.date }}</p> 
-          <a href="{% url 'delete_note' skill.id note.id %}" 
-          onclick="return confirm('Are you sure you want to delete this note')" class="btn red">Delete</a>
+          <a href="{% url 'delete_note' skill.id note.id %}" class="btn red">Delete</a>
         </div>
       </div>
       {% endfor %}

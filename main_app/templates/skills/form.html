@@ -4,7 +4,7 @@
   {% if skill %}
     <h3 class="center-align">Edit <span class="teal-text">{{ skill.description }}</span></h3>
     <div class="row">
-      <form action="{% url 'skills_update' skill.id %}" method="POST" class="col s9 offset-s1">
+      <form action="" method="POST" class="col s9 offset-s1">
       <!-- security measure that validates requests to the server -->
       {% csrf_token %}
       <table>
@@ -20,7 +20,7 @@
     <h3 class="center">Add a Skill</h3>    
     <div class="row">
       <!-- empty action attribute will post to the same url in the address bar -->
-    <form action="{% url 'skills_create' %}" method="POST" class="col s9 offset-s1">
+    <form action="" method="POST" class="col s9 offset-s1">
       <!-- security measure that validates requests to the server -->
       {% csrf_token %}
       <table>
