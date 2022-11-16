@@ -14,6 +14,6 @@ urlpatterns = [
   path('skills/<int:skill_id>/add_note', views.add_note, name='add_note'),
   path('skills/<int:skill_id>/notes/<int:note_id>/delete', views.delete_note, name='delete_note'),
   path('skills/<int:skill_id>/update', views.skills_update, name='skills_update'),
-  path('skills/<int:skill_id>/delete', views.SkillDelete.as_view(), name='skills_delete'),
+  path('skills/<int:skill_id>/delete', views.skills_delete, name='skills_delete'),
   path('accounts/signup/', views.signup, name='signup'),
 ]

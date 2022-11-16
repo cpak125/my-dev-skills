@@ -94,7 +94,7 @@ def skills_update(request, skill_id):
   skill = Skill.objects.get(id=skill_id)
   form = SkillForm(request.POST or None, instance=skill)
 
-  if(request.method == 'POST'):
+  if request.method == 'POST':
     if form.is_valid():
       form.save()
       return redirect('skills_detail', skill_id=skill_id)
@@ -103,12 +103,13 @@ def skills_update(request, skill_id):
     'skill': skill
 })  
 
-# DeleteView automatically renders a confirmation template i.e., <lowercase model>_confirm_delete_html
-# Class-Based View to delete a skill
-class SkillDelete(LoginRequiredMixin, DeleteView):
-  model = Skill
-  success_url = '/skills/'
-
+# Define skill delete view
+def skills_delete(request, skill_id):
+  skill = Skill.objects.get(id=skill_id)
+  if request.method == 'POST':
+    skill.delete()
+    return redirect('skills_index')
+  return render(request, 'skills/delete.html', {'skill': skill})  
 
 # Define signup functionality
 def signup(request):
